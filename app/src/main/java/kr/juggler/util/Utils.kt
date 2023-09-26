@@ -19,7 +19,7 @@ import android.view.WindowManager
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat.getSystemService
-import jp.juggler.translatebutton.API_APPLICATION_OVERLAY
+import kr.juggler.translatebutton.API_APPLICATION_OVERLAY
 import java.util.*
 
 
@@ -73,27 +73,17 @@ fun createResizedBitmap(src: Bitmap, dstWidth: Int, dstHeight: Int): Bitmap {
         ?: error("createBitmap returns null")
 }
 
-// 型推論できる文脈だと型名を書かずにすむ
 inline fun <reified T : Any> Any?.cast(): T? = this as? T
 
-// 型推論できる文脈だと型名を書かずにすむ
 inline fun <reified T> systemService(context: Context): T? =
     /* ContextCompat. */ getSystemService(context, T::class.java)
 
 // Android 8.0 は Settings.canDrawOverlays(context) にバグがある
 // https://stackoverflow.com/questions/46173460/why-in-android-o-method-settings-candrawoverlays-returns-false-when-user-has
 fun canDrawOverlaysCompat(context: Context): Boolean {
-    // Android 5 always allow overlay.
     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) return true
-
-    // (Android 7+) if Settings.canDrawOverlays(context) == true, it's reliable.
     if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M && Settings.canDrawOverlays(context)) return true
-
-    // Android 6 と Android 8, 8.1 はバグがあるので
-    // 許可されていても Settings.canDrawOverlays(context) がfalseを返す場合がある
-
     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
-        // AppOpsManager.checkOp() は API 29 でdeprecated
 
         systemService<AppOpsManager>(context)?.let { manager ->
             try {

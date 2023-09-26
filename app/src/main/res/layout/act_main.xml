@@ -11,7 +11,7 @@
     android:paddingEnd="12dp"
     android:paddingBottom="6dp"
     android:scrollbarStyle="outsideOverlay"
-    tools:context="jp.juggler.translatebutton.ActMain">
+    tools:context=".ActMain">
 
     <LinearLayout
         android:layout_width="match_parent"

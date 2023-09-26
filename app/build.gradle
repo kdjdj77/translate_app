@@ -8,7 +8,7 @@ android {
     buildToolsVersion "33.0.1"
 
     defaultConfig {
-        applicationId "jp.juggler.screenshotbutton"
+        applicationId "kr.juggler.translatebutton"
         minSdkVersion 21
         targetSdkVersion 33
         versionCode 7
@@ -33,7 +33,6 @@ android {
         enabled = true
     }
 
-    // Generate Signed APK のファイル名を変更
     android.applicationVariants.all { variant ->
         if (variant.buildType.name == "release") {
             variant.outputs.all {
@@ -42,7 +41,7 @@ android {
                 def versionName = defaultConfig.versionName
                 def flavor = variant.buildType.name
                 def date = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date())
-                outputFileName = "../../ScreenShotButton-${flavor}-${versionCode}-${versionName}-${date}.apk"
+                outputFileName = "../../TranslateButton-${flavor}-${versionCode}-${versionName}-${date}.apk"
             }
         }
     }
