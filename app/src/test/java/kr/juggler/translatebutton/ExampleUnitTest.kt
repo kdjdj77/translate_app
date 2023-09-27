@@ -1,4 +1,4 @@
-package kr.juggler.screenshotbutton
+package kr.juggler.translatebutton
 
 import org.junit.Test
 
