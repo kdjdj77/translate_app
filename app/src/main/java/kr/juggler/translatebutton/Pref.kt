@@ -2,7 +2,6 @@ package kr.juggler.translatebutton
 
 import android.content.Context
 import android.content.SharedPreferences
-import android.os.Build
 import android.text.Editable
 import android.text.TextWatcher
 import android.widget.CompoundButton
@@ -176,8 +175,6 @@ object Pref {
     fun pref(context : Context) :SharedPreferences =
         context.getSharedPreferences("Pref",Context.MODE_PRIVATE)
 
-
-    // キー名と設定項目のマップ。インポートやアプリ設定で使う
     val map = HashMap<String, BasePref<*>>()
 
     val smallButton = IntPref(

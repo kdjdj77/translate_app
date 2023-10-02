@@ -113,7 +113,6 @@ private fun getVolumePathApi24(storageManager: StorageManager, uuid: String): St
         "primary" -> storageManager.primaryStorageVolume
         else -> storageManager.storageVolumes.find { it.uuid == uuid }
     }?.let {
-        // API 29 だとグレーリストに入っていた
         // Accessing hidden method Landroid/os/storage/StorageVolume;->getPath()Ljava/lang/String; (greylist, reflection, allowed)
         StorageVolume::class.java.getMethod("getPath").invoke(it).cast()
     } ?: error("can't find volume for uuid $uuid")
@@ -213,7 +212,6 @@ fun pathFromDocumentUriOrThrow(context: Context, uri: Uri) = when {
 //                    id.toLong()
 //                )
 //                    getDataColumn(context, uri2, null, null) ?: error("can't path of $uri and $uri2")
-//                    // メディアスキャナに登録される前だと IllegalArgumentException: Unknown URI: content://downloads/public_downloads/6297 となる
 //            }
 //        }
 
@@ -233,11 +231,9 @@ fun deleteDocument(
     context: Context,
     itemUri: Uri
 ): Boolean {
-    // 削除に成功したら真
     if (DocumentsContract.deleteDocument(context.contentResolver, itemUri))
         return true
 
-    // 削除できない場合、存在しないなら真
     context.contentResolver.query(
         itemUri,
         arrayOf(DocumentsContract.Document.COLUMN_DOCUMENT_ID),
@@ -248,7 +244,6 @@ fun deleteDocument(
         if (it.count == 0) return true
     }
 
-    // 削除できないが存在はしている…
     log.w("deleteDocument: can't delete, but exist… $itemUri")
     return false
 }

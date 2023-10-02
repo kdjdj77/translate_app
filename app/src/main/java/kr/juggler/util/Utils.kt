@@ -78,13 +78,11 @@ inline fun <reified T : Any> Any?.cast(): T? = this as? T
 inline fun <reified T> systemService(context: Context): T? =
     /* ContextCompat. */ getSystemService(context, T::class.java)
 
-// Android 8.0 は Settings.canDrawOverlays(context) にバグがある
-// https://stackoverflow.com/questions/46173460/why-in-android-o-method-settings-candrawoverlays-returns-false-when-user-has
+// Android 8.0 Settings.canDrawOverlays(context)
 fun canDrawOverlaysCompat(context: Context): Boolean {
     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) return true
     if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M && Settings.canDrawOverlays(context)) return true
     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
-
         systemService<AppOpsManager>(context)?.let { manager ->
             try {
                 @Suppress("DEPRECATION")
@@ -142,9 +140,6 @@ fun getScreenSize(context: Context) = Point().also {
     //    systemService<WindowManager>(context)!!
     //        .defaultDisplay!!
     //        .getRealSize(it)
-
-    // https://github.com/google/grafika/blob/master/app/src/main/java/com/android/grafika/ScreenRecordActivity.java
-    // grafika のサンプルでは DisplayManager.getDisplay を使っていた
     systemService<DisplayManager>(context)!!
         .getDisplay(Display.DEFAULT_DISPLAY)!!
         .getRealSize(it)

@@ -8,7 +8,7 @@ android {
     buildToolsVersion "33.0.1"
 
     defaultConfig {
-        applicationId "kr.juggler.translatebutton"
+        applicationId "jp.juggler.screenshotbutton"
         minSdkVersion 21
         targetSdkVersion 33
         versionCode 7
@@ -41,7 +41,7 @@ android {
                 def versionName = defaultConfig.versionName
                 def flavor = variant.buildType.name
                 def date = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date())
-                outputFileName = "../../TranslateButton-${flavor}-${versionCode}-${versionName}-${date}.apk"
+                outputFileName = "../../ScreenShotButton-${flavor}-${versionCode}-${versionName}-${date}.apk"
             }
         }
     }

@@ -12,6 +12,7 @@
     android:paddingBottom="6dp"
     android:scrollbarStyle="outsideOverlay"
     tools:context=".ActMain">
+    <!-- paddingTopが大きいのは、撮影ボタンのデフォルト位置に被らないようにするため -->
 
     <LinearLayout
         android:layout_width="match_parent"

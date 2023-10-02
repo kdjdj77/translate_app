@@ -6,11 +6,13 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.SystemClock
 import android.provider.DocumentsContract
 import android.provider.Settings
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import kr.juggler.translatebutton.R
+import androidx.core.content.ContextCompat
+import kr.juggler.translatebutton.databinding.ActMainBinding
 import kr.juggler.util.*
 import java.lang.ref.WeakReference
 
@@ -22,6 +24,10 @@ class ActMain : AppCompatActivity() {
         private var refActivity: WeakReference<ActMain>? = null
 
         fun getActivity() = refActivity?.get()
+    }
+
+    private val views by lazy {
+        ActMainBinding.inflate(layoutInflater)
     }
 
     private var lastDialog: WeakReference<Dialog>? = null
@@ -58,7 +64,6 @@ class ActMain : AppCompatActivity() {
         log.d("onStart")
         super.onStart()
         dispatch()
-        /*
         when (val service = CaptureServiceStill.getService()) {
             null -> {
                 timeStartButtonTappedStill = SystemClock.elapsedRealtime()
@@ -68,12 +73,10 @@ class ActMain : AppCompatActivity() {
                 service.stopWithReason("StopButton")
             }
         }
-        */
     }
 
     /////////////////////////////////////////
 
-    // ActivityResultの処理結果によってdispatchを再実行する
     private fun mayContinueDispatch(r: Boolean) {
         if (r) {
             dispatch()
@@ -86,7 +89,26 @@ class ActMain : AppCompatActivity() {
     private fun dispatch() {
         log.d("dispatch")
 
+        if (!prepareOverlay()) return
 
+        //if (!prepareSaveTreeUri()) return
+
+        if (timeStartButtonTappedStill > 0L) {
+
+            if (!Capture.prepareScreenCaptureIntent(arScreenCapture)) return
+
+            timeStartButtonTappedStill = 0L
+            ContextCompat.startForegroundService(
+                this,
+                Intent(this, CaptureServiceStill::class.java).apply {
+                    Capture.screenCaptureIntent?.let {
+                        putExtra(CaptureServiceBase.EXTRA_SCREEN_CAPTURE_INTENT, it)
+                    }
+                }
+            )
+            finishAndRemoveTask()
+            //finish()
+        }
     }
 
     ///////////////////////////////////////////////////////
@@ -189,5 +211,4 @@ class ActMain : AppCompatActivity() {
         }
         return false
     }
-
 }

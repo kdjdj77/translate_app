@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">Translate Tool</string>
+    <string name="app_name" translatable="false">Tenka Tool</string>
 
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>

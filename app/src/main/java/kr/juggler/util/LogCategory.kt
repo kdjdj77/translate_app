@@ -91,7 +91,6 @@ class LogCategory(private val tag: String) {
 
             if (enabled == (oldWriter != null)) return
 
-            // 切り替える時は必ず出力ストリームを一度閉じる
             if (oldWriter != null) {
                 try {
                     synchronized(oldWriter) {
