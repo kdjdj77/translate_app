@@ -65,7 +65,7 @@ public class OCRHelper {
         tessBaseAPI.setImage(bitmap);
         String text = tessBaseAPI.getUTF8Text();
         Log.i("text", text);
-        text = text.replaceAll("[^가-힣]", " ");
+        text = text.replaceAll("[^가-힣\\n]", " ");
         text = text.replaceAll("\\s+", " ");
         return text;
     }
